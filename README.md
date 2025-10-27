@@ -1,61 +1,185 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Projeto Farmácia (IntraFarma)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este é um sistema de gestão de estoque de medicamentos para controle de entradas, saídas, lotes e validades, construído com Laravel.
 
-## About Laravel
+Este guia destina-se à configuração e execução do projeto em um ambiente de desenvolvimento local usando XAMPP e uma instalação manual do PostgreSQL.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Stack do Ambiente
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+* Servidor: Apache (via XAMPP)
+* PHP: (via XAMPP)
+* Banco de Dados: PostgreSQL (instalado manualmente)
+* Backend: Laravel
+* Frontend: Tailwind CSS (compilado com Vite)
+* Gerenciadores de Pacotes: Composer (PHP) e NPM (Node.js)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Pré-requisitos
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Antes de começar, garanta que você tenha os seguintes softwares instalados e funcionando em seu sistema:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+1. XAMPP: (Contém Apache e PHP). Baixe em https://www.apachefriends.org/index.html
+2. PostgreSQL: (O servidor de banco de dados). Baixe em https://www.postgresql.org/download/
+3. Git: Para clonar o repositório.
+4. Composer: O gerenciador de pacotes para PHP. Baixe em https://getcomposer.org/download/
+5. Node.js (com npm): Para o Tailwind/Vite. Baixe a versão LTS em https://nodejs.org/
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Guia de Instalação (Passo a Passo)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Siga estes passos para configurar o ambiente e rodar o projeto.
 
-### Premium Partners
+### 1. Clonar o Repositório
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Primeiro, clone o projeto do GitHub para sua pasta de projetos (ex: C:\Projetos\):
 
-## Contributing
+git clone https://github.com/vaiserk/intrafarma.git
+cd intrafarma
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+### 2. Configurar o Banco de Dados (PostgreSQL)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Este projeto não usa migrations do Laravel para criar o banco inicial. Ele usa um script SQL pronto.
 
-## Security Vulnerabilities
+Abra seu gerenciador de banco de dados (pgAdmin, DBeaver, etc.).
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Crie um novo banco de dados. Ex: farmacia_db.
 
-## License
+Abra o arquivo database/schema_farmacia.sql que está no projeto.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Execute o conteúdo completo deste arquivo dentro do banco farmacia_db que você acabou de criar.
+
+Isso criará todas as tabelas, views, funções e triggers necessários.
+
+---
+
+### 3. Configurar o Apache (XAMPP)
+
+Precisamos configurar o XAMPP para que um domínio (ex: farmacia.localhost) aponte para a pasta public do seu projeto.
+
+#### 3.1. Ativar Virtual Hosts (VHosts)
+
+Abra o painel do XAMPP, clique em "Config" do Apache e abra o arquivo httpd.conf.
+
+Procure (Ctrl+F) pela linha: 
+#Include conf/extra/httpd-vhosts.conf
+
+Apague o # do início para "descomentar" a linha.
+
+Salve o httpd.conf e reinicie o Apache (Stop/Start).
+
+#### 3.2. Adicionar seu Site ao httpd-vhosts.conf
+
+Abra o arquivo: C:\xampp\apache\conf\extra\httpd-vhosts.conf.
+
+Adicione este bloco no final do arquivo (ajuste o caminho DocumentRoot se necessário):
+
+<VirtualHost *:80>
+    ServerName farmacia.localhost
+    DocumentRoot "C:/Projetos/intrafarma/public"
+
+    <Directory "C:/Projetos/intrafarma/public">
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+
+#### 3.3. Editar Arquivo hosts do Windows
+
+Abra o Bloco de Notas como Administrador.
+
+Vá em Arquivo > Abrir....
+
+Navegue até C:\Windows\System32\drivers\etc.
+
+Mude o filtro de "Documentos de Texto (*.txt)" para "Todos os arquivos (*.*)".
+
+Abra o arquivo chamado hosts.
+
+Adicione esta linha no final do arquivo:
+
+127.0.0.1 farmacia.localhost
+
+Salve o arquivo hosts e reinicie o Apache no XAMPP mais uma vez.
+
+---
+
+### 4. Configurar o Projeto (Laravel)
+
+#### 4.1. Criar o Arquivo .env
+
+Na raiz do projeto (intrafarma), copie o arquivo de exemplo:
+
+copy .env.example .env
+
+#### 4.2. Editar o .env
+
+Abra o arquivo .env que você acabou de criar e configure-o para se conectar ao seu banco:
+
+APP_URL=http://farmacia.localhost
+
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432            # (ou a porta do seu PostgreSQL, ex: 5433)
+DB_DATABASE=farmacia_db # (O banco que você criou no Passo 2)
+DB_USERNAME=postgres    # (Seu usuário real do PostgreSQL)
+DB_PASSWORD=sua_senha_real_aqui # (Sua senha real do PostgreSQL)
+
+SESSION_DRIVER=file
+
+#### 4.3. Gerar a Chave do App
+
+No terminal, na raiz do projeto, rode:
+
+php artisan key:generate
+
+---
+
+### 5. Instalar Dependências
+
+Atenção: Se o composer ou npm falharem por "comando não reconhecido", reinicie seu terminal. Se persistir, instale-os (veja os Pré-requisitos).
+
+#### 5.1. Dependências do PHP (Backend)
+
+Rode o Composer para instalar a pasta vendor/:
+
+composer install
+
+Erro Comum: Se o composer install falhar por falta da extensão zip, abra seu C:\xampp\php\php.ini, procure (Ctrl+F) por ;extension=zip e apague o ponto-e-vírgula (;) do início. Salve o arquivo e tente novamente.
+
+#### 5.2. Dependências do JS/CSS (Frontend)
+
+Rode o NPM para instalar o Tailwind (pasta node_modules/):
+
+npm install
+
+---
+
+## Rodando o Projeto
+
+Para rodar a aplicação, você precisa de dois processos rodando ao mesmo tempo:
+
+1. O Servidor Apache (PHP):
+
+No painel do XAMPP, garanta que o módulo Apache esteja rodando (botão "Start" verde).
+
+2. O Servidor Vite (Tailwind/CSS):
+
+Abra um terminal na raiz do projeto (C:\Projetos\intrafarma).
+
+Rode o comando:
+
+npm run dev
+
+Deixe este terminal aberto enquanto você estiver programando. Ele irá recompilar seu CSS automaticamente.
+
+---
+
+## Acesso
+
+Com o Apache e o npm run dev rodando, abra seu navegador e acesse:
+
+http://farmacia.localhost
